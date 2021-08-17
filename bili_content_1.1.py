@@ -49,15 +49,19 @@ def get_content(url,oid):
         sys.exit(0)
 if __name__ == '__main__':
     #BV1oL411E7eR
-    start_url = 'https://www.bilibili.com/video/BV1oL411E7eR'
-    bv = start_url.split('/')[-1]
+    start_url = 'https://www.bilibili.com/video/BV1jW411Y7dL?from=search&seid=14910389995982155576'
+    #bv = start_url.split('/')[-1]
     url = 'https://api.bilibili.com/x/v2/reply/main?next=0&type=1&oid={oid}&mode=3&plat=1&_=1629184010686'
     response = requests.get(start_url,headers=headers)
     response.encoding = 'utf-8'
     page_text = response.text #获取主页面
+    ex_bv = 'https://www.bilibili.com/video/(.*?)/'
+    bv = re.findall(ex_bv,page_text)[0]
+    print(bv)
     ex = '"{num}":{{"aid":(.*?),'.format(num = bv) #通过正则获取aid
     aid = re.findall(ex,page_text)[0]
     url = url.format(oid = aid)
+    print(url)
     get_content(url=url,oid=aid)
 
 
